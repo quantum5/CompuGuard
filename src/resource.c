@@ -11,7 +11,7 @@ HICON GetApplicationIcon(void) {
 							GetSystemMetrics(SM_CYSMICON),
 							LR_DEFAULTCOLOR);
 #else
-	return (HICON)LoadImage(g_hInstance, TEXT("guard.ico"),
+	return (HICON)LoadImage(g_hInstance, T("guard.ico"),
 							IMAGE_ICON, 0, 0, LR_LOADFROMFILE);
 #endif
 }

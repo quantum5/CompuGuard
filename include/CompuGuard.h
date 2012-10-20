@@ -4,11 +4,17 @@
 
 #include <windows.h>
 
-#define APP_NAME TEXT("CompuGuard")
-#define OPTION_WIN_CLASS TEXT("CompuGuardOptions")
+#ifdef T
+#undef T
+#endif
+
+#define T(s) TEXT(s)
+
+#define APP_NAME T("CompuGuard")
+#define OPTION_WIN_CLASS T("CompuGuardOptions")
 #define TRAY_ICON_ID 0xCAFEBABE
 #define WM_TRAY (WM_APP+1)
-#define MessageErrorWnd(hwnd, e) MessageBox(hwnd, e, "Error!", MB_ICONERROR)
+#define MessageErrorWnd(hwnd, e) MessageBox(hwnd, e, T("Error!"), MB_ICONERROR)
 #define MessageError(e) MessageErrorWnd(NULL, e)
 #define LockIfCreated(cs) do { if (cs) EnterCriticalSection(cs); } while (0)
 #define UnlockIfCreated(cs) do { if (cs) LeaveCriticalSection(cs); } while (0)

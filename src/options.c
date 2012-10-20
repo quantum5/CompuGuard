@@ -22,11 +22,11 @@ void InitializeOptions(void) {
 	wincl.hbrBackground = (HBRUSH) GetStockObject(LTGRAY_BRUSH);
 
 	if(!RegisterClassEx(&wincl)) {
-		MessageError("Can't register windows class '" OPTION_WIN_CLASS "'!");
+		MessageError(T("Can't register windows class '") OPTION_WIN_CLASS T("'!"));
 		ExitProcess(0);
 	}
 
-	hwnd = CreateWindowEx(0, OPTION_WIN_CLASS, "Computer Guard Options",
+	hwnd = CreateWindowEx(0, OPTION_WIN_CLASS, T("Computer Guard Options"),
 			WS_OVERLAPPEDWINDOW, CW_USEDEFAULT,
 			CW_USEDEFAULT, 640, 480,
 			NULL, NULL, g_hInstance, NULL);
