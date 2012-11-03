@@ -16,7 +16,6 @@ HICON GetApplicationIcon(void) {
 		icon = (HICON)LoadImage(g_hInstance, T("guard.ico"),
 								IMAGE_ICON, 0, 0, LR_LOADFROMFILE);
 #endif
-		MessageLastError(GetLastError());
 	}
 	return icon;
 }

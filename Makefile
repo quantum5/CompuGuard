@@ -3,8 +3,9 @@ INCDIR=include
 
 CC=cl /nologo
 LD=link /nologo
-CFLAGS=/c /I$(INCDIR) /W4
-LDFLAGS=/subsystem:windows
+CFLAGS=/c /I$(INCDIR) /W4 /Zi
+LDFLAGS=/subsystem:windows /debug /manifest /incremental:no
+LDFLAGS=$(LDFLAGS) "/manifestdependency:type='win32' name='Microsoft.Windows.Common-Controls' version='6.0.0.0' processorArchitecture='*' publicKeyToken='6595b64144ccf1df' language='*'"
 RC=rc /nologo
 RCFLAGS=/i$(INCDIR)
 LIBS=kernel32.lib user32.lib gdi32.lib strsafe.lib shell32.lib
@@ -15,10 +16,11 @@ CFLAGS = $(CFLAGS) /DUNICODE /D_UNICODE
 
 !IFDEF DEBUG
 BUILD=Debug
-CFLAGS=$(CFLAGS) /Zi /DDEBUG
-LDFLAGS=$(LDFLAGS) /debug
+CFLAGS=$(CFLAGS) /DDEBUG
+LDFLAGS=$(LDFLAGS)
 !ELSE
 BUILD=Release
+LDFLAGS=$(LDFLAGS)
 !ENDIF
 
 OUTDIR=build\$(BUILD)
@@ -49,7 +51,9 @@ $(OUTDIR)\CompuGuard.res: CompuGuard.rc
 	$(RC) $(RCFLAGS) /fo$@ $**
 
 {$(SRCDIR)}.c{$(OUTDIR)}.obj::
-	$(CC) $(CFLAGS) /Fo$(OUTDIR)\ $<
+	$(CC) $(CFLAGS) /Fo$(OUTDIR)\ /Fd$(OUTDIR)\ $<
 
 $(DISTDIR)\CompuGuard.exe: $(FILES)
 	$(LD) /out:$@ $(LDFLAGS) $** $(LIBS)
+	mt.exe -nologo -manifest $@.manifest -outputresource:$@;1
+	if ERRORLEVEL 0 del $@.manifest

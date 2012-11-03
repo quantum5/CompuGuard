@@ -26,3 +26,16 @@ void InitializeTray(void) {
 void UninitializeTray(void) {
 	Shell_NotifyIcon(NIM_DELETE, &g_nidIcon);
 }
+
+void ShowTrayMenu(HWND hwnd) {
+	POINT loc;
+	HMENU menu = CreatePopupMenu();
+	
+	GetCursorPos(&loc);
+	AppendMenu(menu, MF_STRING, TRAYBTN_SHOW, IsWindowVisible(hwnd) ? T("&Hide") : T("&Show"));
+	AppendMenu(menu, MF_STRING, TRAYBTN_EXIT, T("&Exit"));
+	
+	SetForegroundWindow(hwnd);
+	TrackPopupMenu(menu, TPM_BOTTOMALIGN, loc.x, loc.y, 0, hwnd, NULL);
+	DestroyMenu(menu);
+}

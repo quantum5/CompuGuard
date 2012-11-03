@@ -7,4 +7,7 @@ NOTIFYICONDATA g_nidIcon;
 HWND g_hwOptions;
 CRITICAL_SECTION g_csTray_;
 CRITICAL_SECTION* g_csTray = &g_csTray_;
-HANDLE hHeap;
+HANDLE g_hHeap;
+HFONT g_hFont;
+LPFN_SHUTDOWNBLOCKREASONCREATE fShutdownBlockReasonCreate;
+LPFN_SHUTDOWNBLOCKREASONDESTROY fShutdownBlockReasonDestroy;
