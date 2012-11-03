@@ -110,29 +110,14 @@ LRESULT CALLBACK OptionsWndProc(HWND hwnd, UINT message, WPARAM wParam, LPARAM l
 					BOOL checked = IsDlgButtonChecked(hwnd, OPTBTN_PREVENT_SHUTDOWN);
 					CheckDlgButton(hwnd, OPTBTN_PREVENT_SHUTDOWN,
 							checked ? BST_UNCHECKED : BST_CHECKED);
-					if (checked) {
-						if (fShutdownBlockReasonCreate != NULL)
-							fShutdownBlockReasonCreate(hwnd, T("Jon Skeet said you can't shutdown!"));
-					} else {
-						if (fShutdownBlockReasonDestroy != NULL)
-							fShutdownBlockReasonDestroy(hwnd);
-					}
+					PreventShutdown(hwnd, checked);
 					break;
 				}
 				case OPTBTN_PREVENT_SLEEP: {
 					BOOL checked = IsDlgButtonChecked(hwnd, OPTBTN_PREVENT_SLEEP);
 					CheckDlgButton(hwnd, OPTBTN_PREVENT_SLEEP,
 							checked ? BST_UNCHECKED : BST_CHECKED);
-					if (checked) {
-						// "Television recording" is beginning. Enable away mode and prevent
-						// the sleep idle time-out.
-						SetThreadExecutionState(ES_CONTINUOUS |
-												ES_SYSTEM_REQUIRED |
-												ES_AWAYMODE_REQUIRED |
-												ES_USER_PRESENT);
-					} else {
-						SetThreadExecutionState(ES_CONTINUOUS);
-					}
+					PreventSleep(checked);
 					break;
 				}
 			}

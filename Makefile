@@ -3,12 +3,12 @@ INCDIR=include
 
 CC=cl /nologo
 LD=link /nologo
-CFLAGS=/c /I$(INCDIR) /W4 /Zi /DCOMPUGUARD
+CFLAGS=/c /I$(INCDIR) /W4 /Zi /DCOMPUGUARD /DWIN32_LEAN_AND_MEAN
 LDFLAGS=/subsystem:windows /debug /manifest /incremental:no
 LDFLAGS=$(LDFLAGS) "/manifestdependency:type='win32' name='Microsoft.Windows.Common-Controls' version='6.0.0.0' processorArchitecture='*' publicKeyToken='6595b64144ccf1df' language='*'"
 RC=rc /nologo
 RCFLAGS=/i$(INCDIR)
-LIBS=kernel32.lib user32.lib gdi32.lib strsafe.lib shell32.lib
+LIBS=kernel32.lib user32.lib gdi32.lib strsafe.lib shell32.lib advapi32.lib
 
 !IFDEF UNICODE
 CFLAGS = $(CFLAGS) /DUNICODE /D_UNICODE
@@ -26,11 +26,13 @@ LDFLAGS=$(LDFLAGS)
 OUTDIR=build\$(BUILD)
 DISTDIR=dist\$(BUILD)
 FILES=$(OUTDIR)\CompuGuard.obj \
-      $(OUTDIR)\tray.obj \
-      $(OUTDIR)\passdlg.obj \
-      $(OUTDIR)\variables.obj \
       $(OUTDIR)\options.obj \
+      $(OUTDIR)\passdlg.obj \
+      $(OUTDIR)\pwrctrl.obj \
       $(OUTDIR)\resource.obj \
+      $(OUTDIR)\security.obj \
+      $(OUTDIR)\tray.obj \
+      $(OUTDIR)\variables.obj \
       $(OUTDIR)\CompuGuard.res
 
 all: initdir $(DISTDIR)\CompuGuard.exe

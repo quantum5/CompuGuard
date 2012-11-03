@@ -3,6 +3,7 @@
 #define idF3B3B5A5_BEF9_4137_A4460B6A94344DF6
 
 #include <windows.h>
+#include <shellapi.h>
 #include <strsafe.h>
 
 #ifdef T
@@ -50,5 +51,14 @@ void UninitializeTray(void);
 HICON GetApplicationIcon(void);
 void ShowTrayMenu(HWND hwnd);
 INT_PTR ShowPasswordDialog(HWND hwnd);
+
+void DisableShutdown(HWND hwnd);
+void EnableShutdown(HWND hwnd);
+void PreventShutdown(HWND hwnd, BOOL enabled);
+void DisableSleep();
+void EnableSleep();
+void PreventSleep(BOOL enabled);
+
+DWORD ProtectProcess();
 
 #endif
