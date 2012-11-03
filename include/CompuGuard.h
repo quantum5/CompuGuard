@@ -13,12 +13,17 @@
 
 #define APP_NAME T("CompuGuard")
 #define OPTION_WIN_CLASS T("CompuGuardOptions")
+
 #define TRAY_ICON_ID 0xCAFEBABE
+
 #define WM_TRAY (WM_APP+1)
-#define MessageErrorWnd(hwnd, e) MessageBox(hwnd, e, T("Error!"), MB_ICONERROR)
-#define MessageError(e) MessageErrorWnd(NULL, e)
+#define WM_EXIT (WM_APP+2)
+
 #define LockIfCreated(cs) do { if (cs) EnterCriticalSection(cs); } while (0)
 #define UnlockIfCreated(cs) do { if (cs) LeaveCriticalSection(cs); } while (0)
+
+#define MessageErrorWnd(hwnd, e) MessageBox(hwnd, e, T("Error!"), MB_ICONERROR)
+#define MessageError(e) MessageErrorWnd(NULL, e)
 
 #ifdef DEBUG
 #   define MessageLastErrorWnd(hwnd, e) do { \
@@ -66,5 +71,6 @@ void InitializeOptions(void);
 void UninitializeTray(void);
 HICON GetApplicationIcon(void);
 void ShowTrayMenu(HWND hwnd);
+INT_PTR ShowPasswordDialog(HWND hwnd);
 
 #endif

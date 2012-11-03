@@ -75,6 +75,12 @@ LRESULT CALLBACK OptionsWndProc(HWND hwnd, UINT message, WPARAM wParam, LPARAM l
 					fShutdownBlockReasonCreate(hwnd, T("Jon Skeet said you can't shutdown!"));
 			
 			break;
+		case WM_EXIT:
+			if (ShowPasswordDialog(hwnd))
+				DestroyWindow(hwnd);
+			else
+				MessageBox(hwnd, T("Wrong password!"), T("Error"), MB_ICONERROR);
+			break;
 		case WM_DESTROY:
 			if (IsDlgButtonChecked(hwnd, OPTBTN_PREVENT_SHUTDOWN) &&
 				fShutdownBlockReasonDestroy != NULL)
@@ -98,7 +104,7 @@ LRESULT CALLBACK OptionsWndProc(HWND hwnd, UINT message, WPARAM wParam, LPARAM l
 					ShowWindow(hwnd, IsWindowVisible(hwnd) ? SW_HIDE : SW_SHOW);
 					break;
 				case TRAYBTN_EXIT:
-					DestroyWindow(hwnd);
+					PostMessage(hwnd, WM_EXIT, 0, 0);
 					break;
 				case OPTBTN_PREVENT_SHUTDOWN: {
 					BOOL checked = IsDlgButtonChecked(hwnd, OPTBTN_PREVENT_SHUTDOWN);

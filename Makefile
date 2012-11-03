@@ -27,6 +27,7 @@ OUTDIR=build\$(BUILD)
 DISTDIR=dist\$(BUILD)
 FILES=$(OUTDIR)\CompuGuard.obj \
       $(OUTDIR)\tray.obj \
+      $(OUTDIR)\passdlg.obj \
       $(OUTDIR)\variables.obj \
       $(OUTDIR)\options.obj \
       $(OUTDIR)\resource.obj \
