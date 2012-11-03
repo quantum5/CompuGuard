@@ -1,12 +1,14 @@
 #include <windows.h>
 #include "CompuGuard.h"
 
-int WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine, int nCmdShow) {
+int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine, int nCmdShow) {
 	MSG msg;
 
 	g_hInstance = hInstance;
 	if (!InitializeCriticalSectionAndSpinCount(g_csTray, 256))
 		g_csTray = NULL;
+	
+	hHeap = GetProcessHeap();
 
 	InitializeOptions();
 	InitializeTray();

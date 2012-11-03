@@ -1,1 +1,1 @@
-#define RID_GUARD 1
+#define RID_LOCK 1

@@ -1,1 +1,2 @@
-RID_GUARD ICON DISCARDABLE lock.ico
+#include <resource.h>
+RID_LOCK ICON lock.ico

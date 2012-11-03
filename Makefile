@@ -3,8 +3,8 @@ INCDIR=include
 
 CC=cl /nologo
 LD=link /nologo
-CFLAGS=/c /I$(INCDIR)
-LDFLAGS=/subsystem:windows /nodefaultlib /entry:WinMain
+CFLAGS=/c /I$(INCDIR) /W4
+LDFLAGS=/subsystem:windows
 RC=rc /nologo
 RCFLAGS=/i$(INCDIR)
 LIBS=kernel32.lib user32.lib gdi32.lib strsafe.lib shell32.lib
@@ -15,7 +15,7 @@ CFLAGS = $(CFLAGS) /DUNICODE /D_UNICODE
 
 !IFDEF DEBUG
 BUILD=Debug
-CFLAGS=$(CFLAGS) /Zi
+CFLAGS=$(CFLAGS) /Zi /DDEBUG
 LDFLAGS=$(LDFLAGS) /debug
 !ELSE
 BUILD=Release
@@ -46,7 +46,7 @@ $(SRCDIR)\resource.c: $(INCDIR)\resource.h $(INCDIR)\CompuGuard.h
 $(SRCDIR)\CompuGuard.rc: $(INCDIR)\resource.h
 
 $(OUTDIR)\CompuGuard.res: CompuGuard.rc
-	$(RC) /fo$@ $**
+	$(RC) $(RCFLAGS) /fo$@ $**
 
 {$(SRCDIR)}.c{$(OUTDIR)}.obj::
 	$(CC) $(CFLAGS) /Fo$(OUTDIR)\ $<
