@@ -1,10 +1,13 @@
-#include "CompuGuard.h"
 #include <windows.h>
 
 TCHAR szRealPassword[] = {0x6f, 0x4a, 0x4b, 0x05, 0x76, 0x4e, 0x40, 0x40, 0x51, 0x00};
 #define PASSWORD_LENGTH 9
 
-LRESULT CALLBACK DlgProc(HWND hWndDlg, UINT msg, WPARAM wParam, LPARAM lParam) {
+#ifdef COMPUGUARD
+#include "CompuGuard.h"
+#include "resource.h"
+
+LRESULT CALLBACK DlgProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam) {
 	switch (msg) {
 		case WM_INITDIALOG:
 			break;
@@ -14,22 +17,20 @@ LRESULT CALLBACK DlgProc(HWND hWndDlg, UINT msg, WPARAM wParam, LPARAM lParam) {
 					do {
 						DWORD dwLength, i;
 						TCHAR szPassword[PASSWORD_LENGTH+1];
-						dwLength = GetDlgItemText(hWndDlg, 1024, szPassword, PASSWORD_LENGTH+1);
+						
+						dwLength = GetDlgItemText(hwnd, IDC_PASSWORD, szPassword, PASSWORD_LENGTH+1);
 						if (dwLength != PASSWORD_LENGTH) {
-							MessageError(T("Wrong Length"));
-							EndDialog(hWndDlg, 0);
+							EndDialog(hwnd, 0);
 							break;
 						}
 						for (i = 0; i < PASSWORD_LENGTH; ++i)
 							szPassword[i] ^= 37;
-						EndDialog(hWndDlg, !lstrcmp(szPassword, szRealPassword));
-						MessageError(!lstrcmp(szPassword, szRealPassword) ? T("Right") : T("Wrong"));
+						EndDialog(hwnd, !lstrcmp(szPassword, szRealPassword));
 						break;
 					} while (0);
 					break;
 				case IDCANCEL:
-					MessageError(T("Cancelled"));
-					EndDialog(hWndDlg, 0);
+					EndDialog(hwnd, 0);
 					break;
 			}
 			break;
@@ -50,6 +51,29 @@ INT_PTR ShowPasswordDialog(HWND hwnd) {
 		MessageBox(hwnd, T("Authentiation Skipped!"), T("Warning!"), MB_ICONWARNING);
 		return 1;
 	}
-	//return DialogBox(g_hInstance, MAKEINTRESOURCE(42), hwnd, DlgProc);
-	return 1;
+	return DialogBox(g_hInstance, MAKEINTRESOURCE(42), hwnd, DlgProc);
+	//return 1;
 }
+#endif
+
+#ifndef COMPUGUARD
+#include <stdio.h>
+int main() {
+	char buf[256];
+	size_t length, i;
+	printf("Hint: length is %d characters\n", PASSWORD_LENGTH);
+	while (1) {
+		printf("Enter string: ");
+		fgets(buf, 256, stdin);
+		buf[strlen(buf)-1] = 0;
+		printf("You entered: %d characters\n", strlen(buf));
+		if (strlen(buf) != PASSWORD_LENGTH) {
+			printf("Length mismatch\n");
+			continue;
+		}
+		for (i = 0; i < PASSWORD_LENGTH; ++i)
+			buf[i] ^= 37;
+		printf("%s\n", lstrcmp(buf, szRealPassword) ? "Wrong" : "Right");
+	}
+}
+#endif

@@ -3,7 +3,7 @@ INCDIR=include
 
 CC=cl /nologo
 LD=link /nologo
-CFLAGS=/c /I$(INCDIR) /W4 /Zi
+CFLAGS=/c /I$(INCDIR) /W4 /Zi /DCOMPUGUARD
 LDFLAGS=/subsystem:windows /debug /manifest /incremental:no
 LDFLAGS=$(LDFLAGS) "/manifestdependency:type='win32' name='Microsoft.Windows.Common-Controls' version='6.0.0.0' processorArchitecture='*' publicKeyToken='6595b64144ccf1df' language='*'"
 RC=rc /nologo
@@ -40,6 +40,8 @@ initdir:
 	if not exist $(OUTDIR) md $(OUTDIR)
 	if not exist build md dist
 	if not exist $(DISTDIR) md $(DISTDIR)
+
+$(INCDIR)\CompuGuard.h: $(INCDIR)\qdebug.h $(INCDIR)\selfmemory.h
 
 $(SRCDIR)\CompuGuard.c: $(INCDIR)\CompuGuard.h
 $(SRCDIR)\tray.c: $(INCDIR)\CompuGuard.h
