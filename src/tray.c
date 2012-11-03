@@ -35,6 +35,7 @@ void ShowTrayMenu(HWND hwnd) {
 	AppendMenu(menu, MF_STRING, TRAYBTN_SHOW, IsWindowVisible(hwnd) ? T("&Hide") : T("&Show"));
 	AppendMenu(menu, MF_STRING, TRAYBTN_EXIT, T("&Exit"));
 	
+	SetMenuDefaultItem(menu, TRAYBTN_SHOW, FALSE);
 	SetForegroundWindow(hwnd);
 	TrackPopupMenu(menu, TPM_BOTTOMALIGN, loc.x, loc.y, 0, hwnd, NULL);
 	DestroyMenu(menu);

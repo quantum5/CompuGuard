@@ -27,8 +27,8 @@ void InitializeOptions(void) {
 	}
 
 	hwnd = CreateWindowEx(0, OPTION_WIN_CLASS, T("Computer Guard Options"),
-			WS_OVERLAPPEDWINDOW, CW_USEDEFAULT,
-			CW_USEDEFAULT, 640, 480,
+			WS_CAPTION | WS_SYSMENU | WS_BORDER, CW_USEDEFAULT,
+			CW_USEDEFAULT, 420, 250,
 			NULL, NULL, g_hInstance, NULL);
 
 	UpdateWindow(hwnd);
@@ -118,6 +118,8 @@ LRESULT CALLBACK OptionsWndProc(HWND hwnd, UINT message, WPARAM wParam, LPARAM l
 					CheckDlgButton(hwnd, OPTBTN_PREVENT_SLEEP,
 							checked ? BST_UNCHECKED : BST_CHECKED);
 					if (checked) {
+						// "Television recording" is beginning. Enable away mode and prevent
+						// the sleep idle time-out.
 						SetThreadExecutionState(ES_CONTINUOUS |
 												ES_SYSTEM_REQUIRED |
 												ES_AWAYMODE_REQUIRED |
@@ -129,6 +131,9 @@ LRESULT CALLBACK OptionsWndProc(HWND hwnd, UINT message, WPARAM wParam, LPARAM l
 				}
 			}
 			break;
+		case WM_CLOSE:
+			ShowWindow(hwnd, SW_HIDE);
+			return 0;
 		case WM_QUERYENDSESSION:
 			return !IsDlgButtonChecked(hwnd, OPTBTN_PREVENT_SHUTDOWN);
 		default:
