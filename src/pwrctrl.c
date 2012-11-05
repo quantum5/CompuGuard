@@ -1,6 +1,10 @@
 #include "CompuGuard.h"
 #include <windows.h>
 
+#ifndef ES_AWAYMODE_REQUIRED
+#	define ES_AWAYMODE_REQUIRED 0x00000040
+#endif
+
 void DisableShutdown(HWND hwnd) {
 	if (fShutdownBlockReasonCreate != NULL)
 		fShutdownBlockReasonCreate(hwnd, T("Jon Skeet said you can't shutdown!"));
