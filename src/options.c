@@ -2,10 +2,13 @@
 #include <windows.h>
 
 LRESULT CALLBACK OptionsWndProc(HWND, UINT, WPARAM, LPARAM);
+HBRUSH background;
 
 void InitializeOptions(void) {
 	WNDCLASSEX wincl;
 	HWND hwnd;
+
+	background = CreateSolidBrush(RGB(0xF0, 0xF0, 0xF0));
 
 	wincl.hInstance = g_hInstance;
 	wincl.lpszClassName = OPTION_WIN_CLASS;
@@ -19,7 +22,7 @@ void InitializeOptions(void) {
 	wincl.lpszMenuName = NULL;
 	wincl.cbClsExtra = 0;
 	wincl.cbWndExtra = 0;
-	wincl.hbrBackground = CreateSolidBrush(RGB(0xF0, 0xF0, 0xF0));
+	wincl.hbrBackground = background;
 
 	if(!RegisterClassEx(&wincl)) {
 		MessageError(T("Can't register windows class '") OPTION_WIN_CLASS T("'!"));
@@ -127,6 +130,8 @@ LRESULT CALLBACK OptionsWndProc(HWND hwnd, UINT message, WPARAM wParam, LPARAM l
 			return 0;
 		case WM_QUERYENDSESSION:
 			return !IsDlgButtonChecked(hwnd, OPTBTN_PREVENT_SHUTDOWN);
+		case WM_CTLCOLORSTATIC:
+			return (LONG) background;
 		default:
 			return DefWindowProc(hwnd, message, wParam, lParam);
 	}
