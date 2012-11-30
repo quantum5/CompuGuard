@@ -11,7 +11,7 @@
         LPTSTR s; \
         if (FormatMessage(FORMAT_MESSAGE_ALLOCATE_BUFFER | FORMAT_MESSAGE_FROM_SYSTEM, NULL, e, 0, (LPTSTR)&s, 0, NULL) == 0) {\
             TCHAR str[25]; \
-            StringCchPrintf(str, 25, T("%x"), str); \
+            snprintf(str, 25, T("%x"), str); \
             MessageErrorWnd(hwnd, str, title); \
         } else { \
             MessageErrorWnd(hwnd, s, title); \
@@ -26,7 +26,7 @@
 
 #define MessageIntBox(hwnd, i, title, opt) do {\
     TCHAR buf[100];\
-    StringCchPrintf(buf, 100, "%d", i);\
+    snprintf(buf, 100, "%d", i);\
     MessageBox(hwnd, buf, title, opt);\
 } while(0)
 

@@ -4,7 +4,6 @@
 
 #include <windows.h>
 #include <shellapi.h>
-#include <strsafe.h>
 
 #ifdef T
 #undef T
