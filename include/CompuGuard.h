@@ -59,6 +59,11 @@ void DisableSleep();
 void EnableSleep();
 void PreventSleep(BOOL enabled);
 
+BOOL DisableMouse(void);
+BOOL DisableKeyboard(void);
+BOOL EnableMouse(void);
+BOOL EnableKeyboard(void);
+
 DWORD ProtectProcess();
 
 #endif
