@@ -54,9 +54,9 @@ INT_PTR ShowPasswordDialog(HWND hwnd) {
 	return DialogBox(g_hInstance, MAKEINTRESOURCE(42), hwnd, DlgProc);
 	//return 1;
 }
-#endif
 
-#ifndef COMPUGUARD
+#else
+
 #include <stdio.h>
 int main() {
 	char buf[256];

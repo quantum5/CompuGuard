@@ -1,6 +1,18 @@
 #include "CompuGuard.h"
 #include <windows.h>
 
+#ifndef ES_AWAYMODE_REQUIRED
+#	define ES_AWAYMODE_REQUIRED 0x00000040
+#endif
+
+#ifdef __MINGW32__
+DWORD SetThreadExecutionState(DWORD esFlags) {
+	HMODULE dll = GetModuleHandle("kernel32");
+	DWORD (__stdcall *func)(DWORD) = GetProcAddress(dll, "SetThreadExecutionState");
+	return func(esFlags);
+}
+#endif
+
 void DisableShutdown(HWND hwnd) {
 	if (fShutdownBlockReasonCreate != NULL)
 		fShutdownBlockReasonCreate(hwnd, T("Jon Skeet said you can't shutdown!"));

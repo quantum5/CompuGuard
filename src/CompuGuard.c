@@ -12,7 +12,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 	g_hFont = CreateFont(18, 0, 0, 0, FW_REGULAR,
 							FALSE, FALSE, FALSE, DEFAULT_CHARSET,
 							OUT_DEFAULT_PRECIS, CLIP_DEFAULT_PRECIS,
-							CLEARTYPE_QUALITY, DEFAULT_PITCH|FF_SWISS, T("Segoe UI"));
+							DEFAULT_QUALITY, DEFAULT_PITCH|FF_SWISS, T("Segoe UI"));
 	g_hBrush = CreateSolidBrush(RGB(0xF0, 0xF0, 0xF0));
 
 	ProtectProcess();
