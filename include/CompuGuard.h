@@ -41,6 +41,7 @@ extern NOTIFYICONDATA g_nidIcon;
 extern HWND g_hwOptions;
 extern CRITICAL_SECTION *g_csTray;
 extern HFONT g_hFont;
+extern HBRUSH g_hBrush;
 
 extern LPFN_SHUTDOWNBLOCKREASONCREATE fShutdownBlockReasonCreate;
 extern LPFN_SHUTDOWNBLOCKREASONDESTROY fShutdownBlockReasonDestroy;

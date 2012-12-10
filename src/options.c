@@ -19,7 +19,7 @@ void InitializeOptions(void) {
 	wincl.lpszMenuName = NULL;
 	wincl.cbClsExtra = 0;
 	wincl.cbWndExtra = 0;
-	wincl.hbrBackground = CreateSolidBrush(RGB(0xF0, 0xF0, 0xF0));
+	wincl.hbrBackground = g_hBrush;
 
 	if(!RegisterClassEx(&wincl)) {
 		MessageError(T("Can't register windows class '") OPTION_WIN_CLASS T("'!"));
@@ -127,6 +127,11 @@ LRESULT CALLBACK OptionsWndProc(HWND hwnd, UINT message, WPARAM wParam, LPARAM l
 			return 0;
 		case WM_QUERYENDSESSION:
 			return !IsDlgButtonChecked(hwnd, OPTBTN_PREVENT_SHUTDOWN);
+		case WM_CTLCOLORSTATIC: {
+			HDC hdcStatic = (HDC) wParam;
+			SetBkColor(hdcStatic, RGB(0xF0, 0xF0, 0xF0));
+			return (INT_PTR) g_hBrush;
+		}
 		default:
 			return DefWindowProc(hwnd, message, wParam, lParam);
 	}

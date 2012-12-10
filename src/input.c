@@ -1,4 +1,5 @@
 #include <windows.h>
+#include <CompuGuard.h>
 
 HHOOK hHookMouse, hHookKeyboard;
 

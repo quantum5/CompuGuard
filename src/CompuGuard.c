@@ -13,6 +13,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 							FALSE, FALSE, FALSE, DEFAULT_CHARSET,
 							OUT_DEFAULT_PRECIS, CLIP_DEFAULT_PRECIS,
 							CLEARTYPE_QUALITY, DEFAULT_PITCH|FF_SWISS, T("Segoe UI"));
+	g_hBrush = CreateSolidBrush(RGB(0xF0, 0xF0, 0xF0));
 
 	ProtectProcess();
 
