@@ -36,39 +36,83 @@ void InitializeOptions(void) {
 }
 
 LRESULT CALLBACK OptionsWndProc(HWND hwnd, UINT message, WPARAM wParam, LPARAM lParam) {
-	static HWND hwAppDesc, hwcPreventShutdown, hwcPreventSleep;
+	static HWND hwAppDesc, hwcPreventShutdown, hwcPreventSleep,
+				hwgbBSOD, hwcBSODnoMouse, hwcBSODsecureDesk,
+				hwcBSODnoTaskmgr, hwbBSOD;
 	switch (message) {
 		case WM_CREATE:
 			hwAppDesc = CreateWindow(T("STATIC"),
-									 T("Welcome to CompuGuard, ")
-									 T("select something to guard:"),
-									 WS_CHILD | WS_VISIBLE | SS_LEFT,
-									 10, 10, 400, 20, hwnd, NULL,
-									 g_hInstance, NULL);
+					T("Welcome to CompuGuard, ")
+					T("select something to guard:"),
+					WS_CHILD | WS_VISIBLE | SS_LEFT,
+					10, 10, 400, 20, hwnd, NULL,
+					g_hInstance, NULL);
 
-			hwcPreventShutdown = CreateWindow(
-					TEXT("button"),
+			hwcPreventShutdown = CreateWindow(TEXT("button"),
 					TEXT("Prevent &Shutdown"),
 					WS_VISIBLE | WS_CHILD | BS_CHECKBOX,
-					10, 40, 190, 20,        
+					10, 40, 190, 20,
 					hwnd, (HMENU) OPTBTN_PREVENT_SHUTDOWN,
 					g_hInstance, NULL);
 			CheckDlgButton(hwnd, OPTBTN_PREVENT_SHUTDOWN, BST_CHECKED);
 
-			hwcPreventSleep = CreateWindow(
-					TEXT("button"),
+			hwcPreventSleep = CreateWindow(TEXT("button"),
 					TEXT("Prevent S&leep"),
 					WS_VISIBLE | WS_CHILD | BS_CHECKBOX,
-					10, 60, 190, 20,        
+					10, 60, 190, 20,
 					hwnd, (HMENU) OPTBTN_PREVENT_SLEEP,
 					g_hInstance, NULL);
 			CheckDlgButton(hwnd, OPTBTN_PREVENT_SLEEP, BST_CHECKED);
 
-			SendMessage(hwnd, WM_SETFONT, (WPARAM)g_hFont, TRUE);
-			SendMessage(hwAppDesc, WM_SETFONT, (WPARAM)g_hFont, TRUE);
-			SendMessage(hwcPreventShutdown, WM_SETFONT, (WPARAM)g_hFont, TRUE);
-			SendMessage(hwcPreventSleep, WM_SETFONT, (WPARAM)g_hFont, TRUE);
-			//InvalidateRect(hwnd, NULL, TRUE);
+			// Blue Screen Section
+			hwgbBSOD = CreateWindow(TEXT("button"),
+					TEXT("&Blue Screen of Death"),
+					WS_VISIBLE | WS_CHILD | BS_GROUPBOX,
+					210, 40, 190, 100, hwnd, NULL,
+					g_hInstance, NULL);
+
+			hwcBSODnoMouse = CreateWindow(
+					TEXT("button"),
+					TEXT("Disable &Mouse"),
+					WS_VISIBLE | WS_CHILD | BS_CHECKBOX,
+					220, 55, 150, 20,
+					hwnd, (HMENU) OPTBTN_BSOD_DISABLE_MOUSE,
+					g_hInstance, NULL);
+			CheckDlgButton(hwnd, OPTBTN_BSOD_DISABLE_MOUSE, BST_CHECKED);
+
+			hwcBSODsecureDesk = CreateWindow(
+					TEXT("button"),
+					TEXT("Use &Secure Desktop"),
+					WS_VISIBLE | WS_CHILD | BS_CHECKBOX,
+					220, 75, 150, 20,
+					hwnd, (HMENU) OPTBTN_BSOD_SECURE_DESK,
+					g_hInstance, NULL);
+			CheckDlgButton(hwnd, OPTBTN_BSOD_SECURE_DESK, BST_CHECKED);
+
+			hwcBSODnoTaskmgr = CreateWindow(
+					TEXT("button"),
+					TEXT("Disable &Task Manager"),
+					WS_VISIBLE | WS_CHILD | BS_CHECKBOX,
+					220, 75, 150, 20,
+					hwnd, (HMENU) OPTBTN_BSOD_NO_TASKMGR,
+					g_hInstance, NULL);
+			CheckDlgButton(hwnd, OPTBTN_BSOD_NO_TASKMGR, BST_CHECKED);
+
+			hwbBSOD = CreateWindow(TEXT("button"),
+					TEXT("Show &BSOD"),
+					WS_VISIBLE | WS_CHILD | BS_PUSHBUTTON,
+					220, 95, 170, 20,
+					hwnd, (HMENU) OPTBTN_BSOD_RUN,
+					g_hInstance, NULL);
+
+			SendMessage(hwnd, WM_SETFONT, (WPARAM) g_hFont, TRUE);
+			SendMessage(hwAppDesc, WM_SETFONT, (WPARAM) g_hFont, TRUE);
+			SendMessage(hwcPreventShutdown, WM_SETFONT, (WPARAM) g_hFont, TRUE);
+			SendMessage(hwcPreventSleep, WM_SETFONT, (WPARAM) g_hFont, TRUE);
+			SendMessage(hwgbBSOD, WM_SETFONT, (WPARAM) g_hFont, TRUE);
+			SendMessage(hwcBSODnoMouse, WM_SETFONT, (WPARAM) g_hFont, TRUE);
+			SendMessage(hwcBSODsecureDesk, WM_SETFONT, (WPARAM) g_hFont, TRUE);
+			SendMessage(hwbBSOD, WM_SETFONT, (WPARAM) g_hFont, TRUE);
 			
 			if (IsDlgButtonChecked(hwnd, OPTBTN_PREVENT_SHUTDOWN) &&
 				fShutdownBlockReasonCreate != NULL)
@@ -120,6 +164,27 @@ LRESULT CALLBACK OptionsWndProc(HWND hwnd, UINT message, WPARAM wParam, LPARAM l
 					PreventSleep(checked);
 					break;
 				}
+				case OPTBTN_BSOD_DISABLE_MOUSE: {
+					g_BSODnoMouse = IsDlgButtonChecked(hwnd, OPTBTN_BSOD_DISABLE_MOUSE);
+					CheckDlgButton(hwnd, OPTBTN_BSOD_DISABLE_MOUSE,
+							g_BSODnoMouse ? BST_UNCHECKED : BST_CHECKED);
+					break;
+				}
+				case OPTBTN_BSOD_SECURE_DESK: {
+					g_BSODsecureDesk = IsDlgButtonChecked(hwnd, OPTBTN_BSOD_SECURE_DESK);
+					CheckDlgButton(hwnd, OPTBTN_BSOD_SECURE_DESK,
+							g_BSODsecureDesk ? BST_UNCHECKED : BST_CHECKED);
+					break;
+				}
+				case OPTBTN_BSOD_NO_TASKMGR: {
+					g_BSODnotaskmgr = IsDlgButtonChecked(hwnd, OPTBTN_BSOD_NO_TASKMGR);
+					CheckDlgButton(hwnd, OPTBTN_BSOD_NO_TASKMGR,
+							g_BSODnotaskmgr ? BST_UNCHECKED : BST_CHECKED);
+					break;
+				}
+				case OPTBTN_BSOD_RUN:
+					ShowBSOD();
+					break;
 			}
 			break;
 		case WM_CLOSE:

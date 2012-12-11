@@ -31,6 +31,10 @@
 
 #define OPTBTN_PREVENT_SHUTDOWN 0xAD01
 #define OPTBTN_PREVENT_SLEEP 0xAD02
+#define OPTBTN_BSOD_DISABLE_MOUSE 0xAD11
+#define OPTBTN_BSOD_SECURE_DESK 0xAD12
+#define OPTBTN_BSOD_NO_TASKMGR 0xAD13
+#define OPTBTN_BSOD_RUN 0xAD1F
 
 typedef BOOL (WINAPI *LPFN_SHUTDOWNBLOCKREASONCREATE) (HWND, LPCTSTR);
 typedef BOOL (WINAPI *LPFN_SHUTDOWNBLOCKREASONDESTROY) (HWND);
@@ -41,6 +45,11 @@ extern HWND g_hwOptions;
 extern CRITICAL_SECTION *g_csTray;
 extern HFONT g_hFont;
 extern HBRUSH g_hBrush;
+
+extern BOOL g_BSODnoMouse;
+extern BOOL g_BSODsecureDesk;
+extern BOOL g_BSODnotaskmgr;
+extern BOOL g_BSODrunning;
 
 extern LPFN_SHUTDOWNBLOCKREASONCREATE fShutdownBlockReasonCreate;
 extern LPFN_SHUTDOWNBLOCKREASONDESTROY fShutdownBlockReasonDestroy;
@@ -63,6 +72,9 @@ BOOL DisableMouse(void);
 BOOL DisableKeyboard(void);
 BOOL EnableMouse(void);
 BOOL EnableKeyboard(void);
+
+void ShowBSOD(void);
+void InitializeBSOD(void);
 
 DWORD ProtectProcess();
 

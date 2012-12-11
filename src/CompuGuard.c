@@ -23,11 +23,14 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 
 	InitializeOptions();
 	InitializeTray();
+	InitializeBSOD();
+
 	ShowWindow(g_hwOptions, nCmdShow);
 	while (GetMessage(&msg, NULL, 0, 0) > 0) {
 		TranslateMessage(&msg);
 		DispatchMessage(&msg);
 	}
 	UninitializeTray();
+	DeleteObject(g_hBrush);
 	return msg.wParam;
 }

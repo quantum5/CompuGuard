@@ -26,6 +26,7 @@ LDFLAGS=$(LDFLAGS)
 OUTDIR=build\$(BUILD)
 DISTDIR=dist\$(BUILD)
 FILES=$(OUTDIR)\CompuGuard.obj \
+      $(OUTDIR)\bsod.obj \
       $(OUTDIR)\input.obj \
       $(OUTDIR)\options.obj \
       $(OUTDIR)\passdlg.obj \
@@ -51,6 +52,7 @@ $(SRCDIR)\tray.c: $(INCDIR)\CompuGuard.h
 $(SRCDIR)\variables.c: $(INCDIR)\CompuGuard.h
 $(SRCDIR)\options.c: $(INCDIR)\CompuGuard.h
 $(SRCDIR)\input.c: $(INCDIR)\CompuGuard.h
+$(SRCDIR)\bsod.c: $(INCDIR)\CompuGuard.h
 $(SRCDIR)\resource.c: $(INCDIR)\resource.h $(INCDIR)\CompuGuard.h
 $(SRCDIR)\CompuGuard.rc: $(INCDIR)\resource.h
 
