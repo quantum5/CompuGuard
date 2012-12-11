@@ -32,9 +32,11 @@ FILES=$(OUTDIR)\CompuGuard.obj \
       $(OUTDIR)\passdlg.obj \
       $(OUTDIR)\pwrctrl.obj \
       $(OUTDIR)\resource.obj \
+      $(OUTDIR)\securedesk.obj \
       $(OUTDIR)\security.obj \
       $(OUTDIR)\tray.obj \
       $(OUTDIR)\variables.obj \
+      $(OUTDIR)\utilities.obj \
       $(OUTDIR)\CompuGuard.res
 
 all: initdir $(DISTDIR)\CompuGuard.exe

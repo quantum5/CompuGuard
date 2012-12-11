@@ -9,7 +9,7 @@ void RegisterBSODWindowClass(void) {
 	WNDCLASSEX wincl;
 	
 	wincl.hInstance = g_hInstance;
-	wincl.lpszClassName = szClassName;
+	wincl.lpszClassName = BSOD_WIN_CLASS;
 	wincl.lpfnWndProc = BSODProc;
 	wincl.style = CS_DBLCLKS;
 	wincl.cbSize = sizeof(WNDCLASSEX);
@@ -27,13 +27,31 @@ void RegisterBSODWindowClass(void) {
 	}
 }
 
+void SetDesktop(HDESK hDesk) {
+	SetThreadDesktop(hDesk);
+	SwitchDesktop(hDesk);
+}
+
 void InitializeBSOD(void) {
 	hbBSOD = LoadBitmap(g_hInstance, MAKEINTRESOURCE(RID_BSOD));
 	RegisterBSODWindowClass();
 }
 
 void ShowBSOD(void) {
+	if (g_BSODsecureDesk) {
+		TCHAR szDeskName[40];
+		GenerateUUID(szDeskName);
+		
+		g_hOldDesk = GetThreadDesktop(GetCurrentThreadId());
+		g_hNewDesk = CreateDesktop(szDeskName, NULL, NULL, 0, GENERIC_ALL, NULL);
+		SetDesktop(hNewDesk);
+	}
 	MessageBox(NULL, "Not Really Implemented", NULL, 0);
+}
+
+void HideBSOD(void) {
+	if (g_BSODsecureDesk)
+		SetDesktop(g_hOldDesk);
 }
 
 LRESULT CALLBACK BSODProc(HWND hwnd, UINT message, WPARAM wParam, LPARAM lParam) {
@@ -83,7 +101,7 @@ LRESULT CALLBACK BSODProc(HWND hwnd, UINT message, WPARAM wParam, LPARAM lParam)
 				KillTimer(hwnd, 0xDEAD);
 				DestroyWindow(hwnd);
 			} else if (wParam = 0xFAC) {
-				SwitchDesktop(hNewDesk);
+				SetDesktop(hNewDesk);
 			}
 			break;
 		case WM_DESTROY:
@@ -103,8 +121,7 @@ LRESULT CALLBACK BSODProc(HWND hwnd, UINT message, WPARAM wParam, LPARAM lParam)
 			
 			if (g_BSODsecureDesk) {
 				// Out of Secure Desktop
-				SetThreadDesktop(hOldDesk);
-				SwitchDesktop(hOldDesk);
+				SetDesktop(hOldDesk);
 				CloseDesktop(hNewDesk);
 			}
 			if (g_BSODnotaskmgr)

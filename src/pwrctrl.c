@@ -16,6 +16,7 @@ DWORD SetThreadExecutionState(DWORD esFlags) {
 void DisableShutdown(HWND hwnd) {
 	if (fShutdownBlockReasonCreate != NULL)
 		fShutdownBlockReasonCreate(hwnd, T("Jon Skeet said you can't shutdown!"));
+	SetProcessShutdownParameters(0x3FF, 0);
 }
 
 void EnableShutdown(HWND hwnd) {

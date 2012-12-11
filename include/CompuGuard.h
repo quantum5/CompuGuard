@@ -13,6 +13,7 @@
 
 #define APP_NAME T("CompuGuard")
 #define OPTION_WIN_CLASS T("CompuGuardOptions")
+#define BSOD_WIN_CLASS T("CompuGuardBSOD")
 
 #define TRAY_ICON_ID 0xCAFEBABE
 
@@ -51,6 +52,10 @@ extern BOOL g_BSODsecureDesk;
 extern BOOL g_BSODnotaskmgr;
 extern BOOL g_BSODrunning;
 
+extern HDESK g_hNewDesk;
+extern HDESK g_hOldDesk;
+extern HACCEL g_hBSODaccel;
+
 extern LPFN_SHUTDOWNBLOCKREASONCREATE fShutdownBlockReasonCreate;
 extern LPFN_SHUTDOWNBLOCKREASONDESTROY fShutdownBlockReasonDestroy;
 
@@ -77,5 +82,6 @@ void ShowBSOD(void);
 void InitializeBSOD(void);
 
 DWORD ProtectProcess();
+void GenerateUUID(LPTSTR szUUID);
 
 #endif

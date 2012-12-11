@@ -8,13 +8,17 @@ RC=windres
 RCFLAGS=-I$(INCDIR)
 
 FILES=$(SRCDIR)\CompuGuard.c \
+      $(SRCDIR)\bsod.c \
+      $(SRCDIR)\input.c \
       $(SRCDIR)\options.c \
       $(SRCDIR)\passdlg.c \
       $(SRCDIR)\pwrctrl.c \
       $(SRCDIR)\resource.c \
+      $(SRCDIR)\securedesk.c \
       $(SRCDIR)\security.c \
       $(SRCDIR)\tray.c \
-      $(SRCDIR)\variables.c \
+      $(SRCDIR)\utilities.c \
+      $(SRCDIR)\variables.c
 
 all: CompuGuard.exe
 
