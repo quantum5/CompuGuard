@@ -27,25 +27,14 @@ void RegisterBSODWindowClass(void) {
 	}
 }
 
-void SetDesktop(HDESK hDesk) {
-	SetThreadDesktop(hDesk);
-	SwitchDesktop(hDesk);
-}
-
 void InitializeBSOD(void) {
 	hbBSOD = LoadBitmap(g_hInstance, MAKEINTRESOURCE(RID_BSOD));
 	RegisterBSODWindowClass();
 }
 
 void ShowBSOD(void) {
-	if (g_BSODsecureDesk) {
-		TCHAR szDeskName[40];
-		GenerateUUID(szDeskName);
-		
-		g_hOldDesk = GetThreadDesktop(GetCurrentThreadId());
-		g_hNewDesk = CreateDesktop(szDeskName, NULL, NULL, 0, GENERIC_ALL, NULL);
-		SetDesktop(hNewDesk);
-	}
+	if (g_BSODsecureDesk)
+		EnterSecureDesk();
 	MessageBox(NULL, "Not Really Implemented", NULL, 0);
 }
 

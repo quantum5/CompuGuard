@@ -52,8 +52,6 @@ extern BOOL g_BSODsecureDesk;
 extern BOOL g_BSODnotaskmgr;
 extern BOOL g_BSODrunning;
 
-extern HDESK g_hNewDesk;
-extern HDESK g_hOldDesk;
 extern HACCEL g_hBSODaccel;
 
 extern LPFN_SHUTDOWNBLOCKREASONCREATE fShutdownBlockReasonCreate;
@@ -80,6 +78,10 @@ BOOL EnableKeyboard(void);
 
 void ShowBSOD(void);
 void InitializeBSOD(void);
+
+void SetDesktop(HDESK hDesk);
+void EnterSecureDesk();
+void ExitSecureDesk();
 
 DWORD ProtectProcess();
 void GenerateUUID(LPTSTR szUUID);
