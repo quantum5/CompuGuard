@@ -21,8 +21,13 @@ void EnterSecureDesk() {
 	hOldDesk = GetThreadDesktop(GetCurrentThreadId());
 	hNewDesk = CreateDesktop(szDeskName, NULL, NULL, 0, GENERIC_ALL, NULL);
 	SetDesktop(hNewDesk);
+	
+	onSecureDesk = TRUE;
 }
 
 void ExitSecureDesk() {
+	if (!onSecureDesk)
+		return;
 	SetDesktop(g_hOldDesk);
+	onSecureDesk = FALSE;
 }
