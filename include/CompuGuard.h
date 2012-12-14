@@ -37,6 +37,9 @@
 #define OPTBTN_BSOD_NO_TASKMGR 0xAD13
 #define OPTBTN_BSOD_RUN 0xAD1F
 
+#define BSOD_ACCEL_SIZE 8
+#define WM_ENFORCE_FOCUS (WM_APP+1)
+
 typedef BOOL (WINAPI *LPFN_SHUTDOWNBLOCKREASONCREATE) (HWND, LPCTSTR);
 typedef BOOL (WINAPI *LPFN_SHUTDOWNBLOCKREASONDESTROY) (HWND);
 
@@ -46,6 +49,7 @@ extern HWND g_hwOptions;
 extern CRITICAL_SECTION *g_csTray;
 extern HFONT g_hFont;
 extern HBRUSH g_hBrush;
+extern HWND g_hPassDlg;
 
 extern BOOL g_BSODnoMouse;
 extern BOOL g_BSODsecureDesk;
@@ -53,9 +57,13 @@ extern BOOL g_BSODnotaskmgr;
 extern BOOL g_BSODrunning;
 
 extern HACCEL g_hBSODaccel;
+extern HWND hBSODwnd;
 
 extern LPFN_SHUTDOWNBLOCKREASONCREATE fShutdownBlockReasonCreate;
 extern LPFN_SHUTDOWNBLOCKREASONDESTROY fShutdownBlockReasonDestroy;
+
+extern ACCEL BSODaccel[BSOD_ACCEL_SIZE+1];
+extern BOOL BSODbAccel[BSOD_ACCEL_SIZE];
 
 void InitializeTray(void);
 void InitializeOptions(void);
@@ -63,6 +71,7 @@ void UninitializeTray(void);
 HICON GetApplicationIcon(void);
 void ShowTrayMenu(HWND hwnd);
 INT_PTR ShowPasswordDialog(HWND hwnd);
+LRESULT CALLBACK DlgProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam);
 
 void DisableShutdown(HWND hwnd);
 void EnableShutdown(HWND hwnd);
@@ -85,5 +94,9 @@ void ExitSecureDesk();
 
 DWORD ProtectProcess();
 void GenerateUUID(LPTSTR szUUID);
+void DisableTaskManager(void);
+void EnableTaskManager(void);
+void InitializeAccessibilityShortcutKeys();
+void AllowAccessibilityShortcutKeys(BOOL bAllowKeys);
 
 #endif

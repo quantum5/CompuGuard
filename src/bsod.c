@@ -3,6 +3,7 @@
 #include <CompuGuard.h>
 
 HBITMAP hbBSOD;
+HWND hBSODwnd, scwnd;
 LRESULT CALLBACK BSODProc(HWND hwnd, UINT message, WPARAM wParam, LPARAM lParam);
 
 void RegisterBSODWindowClass(void) {
@@ -35,12 +36,24 @@ void InitializeBSOD(void) {
 void ShowBSOD(void) {
 	if (g_BSODsecureDesk)
 		EnterSecureDesk();
-	MessageBox(NULL, "Not Really Implemented", NULL, 0);
+	hBSODwnd = CreateWindowEx(
+			0, BSOD_WIN_CLASS, "Blue Screen of Death",
+			WS_POPUP, CW_USEDEFAULT,
+			CW_USEDEFAULT, 640, 480,
+			NULL, NULL, g_hInstance, NULL);
+
+	DisableKeyboard();
+	if (g_BSODnoMouse)
+		DisableMouse();
+
+	ShowWindow(hBSODwnd, SW_MAXIMIZE);
+	UpdateWindow(hBSODwnd);
+	
 }
 
 void HideBSOD(void) {
 	if (g_BSODsecureDesk)
-		SetDesktop(g_hOldDesk);
+		ExitSecureDesk();
 }
 
 LRESULT CALLBACK BSODProc(HWND hwnd, UINT message, WPARAM wParam, LPARAM lParam) {
@@ -58,13 +71,6 @@ LRESULT CALLBACK BSODProc(HWND hwnd, UINT message, WPARAM wParam, LPARAM lParam)
 			// Hide cursor
 			SetCursor(NULL);
 
-			// Block shutdown
-			if (fShutdownBlockReasonCreate != NULL)
-				fShutdownBlockReasonCreate(hwnd, L"You can't shutdown with a BSoD running.");
-
-			// Shortcuts
-			hAccel = CreateAcceleratorTable((LPACCEL)&accel, ACCEL_SIZE+1);
-
 			// Force to front
 			SetWindowPos(hwnd, HWND_TOPMOST, 0, 0, 0, 0, SWP_ASYNCWINDOWPOS | SWP_NOACTIVATE | SWP_NOMOVE | SWP_NOSIZE);
 			SetForegroundWindow(hwnd);
@@ -78,19 +84,15 @@ LRESULT CALLBACK BSODProc(HWND hwnd, UINT message, WPARAM wParam, LPARAM lParam)
 			break;
 		case WM_TIMER:
 			if (wParam == 0xBEEF) {
+				RECT rectWinSize;
 				KillTimer(hwnd, 0xBEEF);
-				SendMessage(scwnd, STM_SETIMAGE, (WPARAM)IMAGE_BITMAP, (LPARAM)hBitmap);
+				SendMessage(scwnd, STM_SETIMAGE, (WPARAM)IMAGE_BITMAP, (LPARAM)hbBSOD);
 				GetClientRect(hwnd, &rectWinSize);
 				SetWindowPos(scwnd, 0, 0, 0, rectWinSize.right,
 								rectWinSize.bottom, SWP_NOMOVE |
 								SWP_NOZORDER | SWP_NOACTIVATE);
 				// Repaint the Window so the smaller one doesn't cover the bigger one
 				InvalidateRect(hwnd, NULL, TRUE);
-			} else if (wParam == 0xDEAD) {
-				KillTimer(hwnd, 0xDEAD);
-				DestroyWindow(hwnd);
-			} else if (wParam = 0xFAC) {
-				SetDesktop(hNewDesk);
 			}
 			break;
 		case WM_DESTROY:
@@ -98,40 +100,33 @@ LRESULT CALLBACK BSODProc(HWND hwnd, UINT message, WPARAM wParam, LPARAM lParam)
 				fShutdownBlockReasonDestroy(hwnd);
 
 			// Low Level Hooks
-			UnhookWindowsHookEx(hhkKeyboard);
+			EnableKeyboard();
 			if (g_BSODnoMouse)
-				UnhookWindowsHookEx(hhkMouse);
+				EnableMouse();
 
 			// Clean up resources
-			DestroyAcceleratorTable(hAccel);
 			LockSetForegroundWindow(0);
-			SelfFree(szDeskName);
 			AllowAccessibilityShortcutKeys(TRUE);
-			
-			if (g_BSODsecureDesk) {
-				// Out of Secure Desktop
-				SetDesktop(hOldDesk);
-				CloseDesktop(hNewDesk);
-			}
+
 			if (g_BSODnotaskmgr)
 				EnableTaskManager();
 			// Good bye
 			PostQuitMessage(0);
 			break;
 		case WM_CLOSE:
-			switch (DialogBox(hInst, MAKEINTRESOURCE(32), hwnd, DlgProc)) {
+			switch (DialogBox(g_hInstance, MAKEINTRESOURCE(32), hwnd, DlgProc)) {
 				case 1:
 					DestroyWindow(hwnd);
 					break;
 				case 2:
-					hdlg = INVALID_HANDLE_VALUE;
-					MessageBox(hwnd, "You got the password wrong!\n"
-								"Good luck guessing!", "Error!", MB_ICONERROR);
+					MessageBox(hwnd, T("You got the password wrong!\n")
+								T("Good luck guessing!"), T("Error!"), MB_ICONERROR);
 					break;
+				case -1:
+					MessageLastErrorWndTitle(hwnd, GetLastError(), T("Fail to load password!"));
 				default:
-					hdlg = INVALID_HANDLE_VALUE;
-					MessageBox(hwnd, "You just abandoned the perfect chance to exit!\n"
-								"Good luck trying!", "Error!", MB_ICONERROR);
+					MessageBox(hwnd, T("You just abandoned the perfect chance to exit!\n")
+								T("Good luck trying!"), T("Error!"), MB_ICONERROR);
 			}
 			break;
 		case WM_KEYDOWN: // any key without ALT, NYET!
@@ -142,23 +137,23 @@ LRESULT CALLBACK BSODProc(HWND hwnd, UINT message, WPARAM wParam, LPARAM lParam)
 			// else just ignore
 			if (HIWORD(wParam) == 1) {
 				if (LOWORD(wParam) == 0xDEAD) {
-					for (i = 0; i < ACCEL_SIZE; ++i)
-						if (!bAccel[i])
+					for (i = 0; i < BSOD_ACCEL_SIZE; ++i)
+						if (!BSODbAccel[i])
 							return 0;
 					SendMessage(hwnd, WM_CLOSE, 0, 0);
 				} else if ((LOWORD(wParam) & 0xFF00) == 0xBE00) {
-					bAccel[LOWORD(wParam) & 0xFF] = TRUE;
+					BSODbAccel[LOWORD(wParam) & 0xFF] = TRUE;
 				}
 			}
 			break;
 		case WM_QUERYENDSESSION: // Umm, tryink to logoff? NYET!
 			break;
 		case WM_ENFORCE_FOCUS: // Call this when I lose focus
-			if (GetForegroundWindow() != hdlg) {
+			if (GetForegroundWindow() != g_hPassDlg) {
 				printf("hwnd: %d\n", hwnd);
-				if (hdlg != INVALID_HANDLE_VALUE) {
-					SetFocus(hdlg);
-					SetForegroundWindow(hdlg);
+				if (g_hPassDlg != INVALID_HANDLE_VALUE) {
+					SetFocus(g_hPassDlg);
+					SetForegroundWindow(g_hPassDlg);
 				} else {
 					SetFocus(hwnd);
 					SetForegroundWindow(hwnd);

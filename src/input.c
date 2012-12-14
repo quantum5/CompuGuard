@@ -50,7 +50,6 @@ LRESULT CALLBACK LowLevelKeyboardProc(int nCode, WPARAM wParam, LPARAM lParam) {
 			case VK_NUMLOCK:
 			case VK_SCROLL:
 			case VK_PROCESSKEY:
-			case VK_PACKET:
 			case VK_ATTN:
 				return 1;
 		}

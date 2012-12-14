@@ -113,6 +113,7 @@ LRESULT CALLBACK OptionsWndProc(HWND hwnd, UINT message, WPARAM wParam, LPARAM l
 			SendMessage(hwcBSODnoMouse, WM_SETFONT, (WPARAM) g_hFont, TRUE);
 			SendMessage(hwcBSODsecureDesk, WM_SETFONT, (WPARAM) g_hFont, TRUE);
 			SendMessage(hwbBSOD, WM_SETFONT, (WPARAM) g_hFont, TRUE);
+			SendMessage(hwcBSODnoTaskmgr, WM_SETFONT, (WPARAM) g_hFont, TRUE);
 			
 			if (IsDlgButtonChecked(hwnd, OPTBTN_PREVENT_SHUTDOWN) &&
 				fShutdownBlockReasonCreate != NULL)

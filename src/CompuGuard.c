@@ -16,6 +16,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 	g_hBrush = CreateSolidBrush(RGB(0xF0, 0xF0, 0xF0));
 
 	ProtectProcess();
+	InitializeAccessibilityShortcutKeys();
 
 	user32 = GetModuleHandle(T("user32"));
 	fShutdownBlockReasonCreate = (LPFN_SHUTDOWNBLOCKREASONCREATE)GetProcAddress(user32, "ShutdownBlockReasonCreate");
@@ -25,8 +26,12 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 	InitializeTray();
 	InitializeBSOD();
 
+	g_hBSODaccel = CreateAcceleratorTable((LPACCEL)&BSODaccel, BSOD_ACCEL_SIZE+1);
+
 	ShowWindow(g_hwOptions, nCmdShow);
 	while (GetMessage(&msg, NULL, 0, 0) > 0) {
+		if (hBSODwnd && TranslateAccelerator(hBSODwnd, g_hBSODaccel, &msg))
+			continue;
 		TranslateMessage(&msg);
 		DispatchMessage(&msg);
 	}

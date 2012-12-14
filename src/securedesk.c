@@ -28,6 +28,6 @@ void EnterSecureDesk() {
 void ExitSecureDesk() {
 	if (!onSecureDesk)
 		return;
-	SetDesktop(g_hOldDesk);
+	SetDesktop(hOldDesk);
 	onSecureDesk = FALSE;
 }

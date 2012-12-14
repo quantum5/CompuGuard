@@ -10,6 +10,7 @@ TCHAR szRealPassword[] = {0x6f, 0x4a, 0x4b, 0x05, 0x76, 0x4e, 0x40, 0x40, 0x51, 
 LRESULT CALLBACK DlgProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam) {
 	switch (msg) {
 		case WM_INITDIALOG:
+			g_hPassDlg = hwnd;
 			break;
 		case WM_COMMAND:
 			switch(wParam) {
@@ -32,7 +33,10 @@ LRESULT CALLBACK DlgProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam) {
 				case IDCANCEL:
 					EndDialog(hwnd, 0);
 					break;
+				default:
+					return TRUE;
 			}
+			g_hPassDlg = INVALID_HANDLE_VALUE;
 			break;
 		default:
 			return FALSE;

@@ -6,21 +6,17 @@
 #define MessageErrorWnd(hwnd, e) MessageBox(hwnd, e, T("Error!"), MB_ICONERROR)
 #define MessageError(e) MessageErrorWnd(NULL, e)
 
-#ifdef DEBUG
-#   define MessageLastErrorWndTitle(hwnd, e, title) do { \
+#define MessageLastErrorWndTitle(hwnd, e, title) do { \
         LPTSTR s; \
         if (FormatMessage(FORMAT_MESSAGE_ALLOCATE_BUFFER | FORMAT_MESSAGE_FROM_SYSTEM, NULL, e, 0, (LPTSTR)&s, 0, NULL) == 0) {\
             TCHAR str[25]; \
             snprintf(str, 25, T("%x"), str); \
-            MessageErrorWnd(hwnd, str, title); \
+            MessageErrorWndTitle(hwnd, str, title); \
         } else { \
-            MessageErrorWnd(hwnd, s, title); \
+            MessageErrorWndTitle(hwnd, s, title); \
             LocalFree(s); \
         } \
     } while (0)
-#else
-#   define MessageLastErrorWndTitle(hwnd, e, title)
-#endif
 #define MessageLastErrorWnd(hwnd, e) MessageLastErrorWndTitle(hwnd, e, T("Error!"))
 #define MessageLastError(e) MessageLastErrorWnd(NULL, e)
 

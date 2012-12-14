@@ -2,8 +2,8 @@ SRCDIR=src
 INCDIR=include
 
 CC=gcc
-CFLAGS=-I$(INCDIR) -DCOMPUGUARD -DWIN32_LEAN_AND_MEAN
-LIBS=-lkernel32 -luser32 -lgdi32 -lshell32 -ladvapi32 -mwindows
+CFLAGS=-I$(INCDIR) -DCOMPUGUARD -DWIN32_LEAN_AND_MEAN -DWINVER=0x0501
+LIBS=-lkernel32 -luser32 -lgdi32 -lshell32 -ladvapi32 -lrpcrt4 -mwindows
 RC=windres
 RCFLAGS=-I$(INCDIR)
 
