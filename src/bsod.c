@@ -79,6 +79,8 @@ LRESULT CALLBACK BSODProc(HWND hwnd, UINT message, WPARAM wParam, LPARAM lParam)
 
 			if (g_BSODnotaskmgr)
 				DisableTaskManager();
+			
+			RegisterHotKey(hwnd, 0xDEAD, MOD_ALT|MOD_CONTROL|MOD_SHIFT|MOD_WIN, VK_DELETE);
 			break;
 		case WM_SHOWWINDOW:
 			break;
@@ -131,19 +133,20 @@ LRESULT CALLBACK BSODProc(HWND hwnd, UINT message, WPARAM wParam, LPARAM lParam)
 			break;
 		case WM_KEYDOWN: // any key without ALT, NYET!
 			return 0;
+		case WM_HOTKEY:
+			if (wParam == 0xDEAD) {
+				for (i = 0; i < BSOD_ACCEL_SIZE; ++i)
+					if (!BSODbAccel[i])
+						return 0;
+				SendMessage(hwnd, WM_CLOSE, 0, 0);
+			}
+			break;
 		case WM_COMMAND:
 		case WM_SYSCOMMAND:
 			// Only perform work when it's a register key combination
 			// else just ignore
-			if (HIWORD(wParam) == 1) {
-				if (LOWORD(wParam) == 0xDEAD) {
-					for (i = 0; i < BSOD_ACCEL_SIZE; ++i)
-						if (!BSODbAccel[i])
-							return 0;
-					SendMessage(hwnd, WM_CLOSE, 0, 0);
-				} else if ((LOWORD(wParam) & 0xFF00) == 0xBE00) {
-					BSODbAccel[LOWORD(wParam) & 0xFF] = TRUE;
-				}
+			if (HIWORD(wParam) == 1 && (LOWORD(wParam) & 0xFF00) == 0xBE00) {
+				BSODbAccel[LOWORD(wParam) & 0xFF] = TRUE;
 			}
 			break;
 		case WM_QUERYENDSESSION: // Umm, tryink to logoff? NYET!

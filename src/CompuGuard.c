@@ -38,7 +38,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 	InitializeTray();
 	InitializeBSOD();
 
-	g_hBSODaccel = CreateAcceleratorTable((LPACCEL)&BSODaccel, BSOD_ACCEL_SIZE+1);
+	g_hBSODaccel = CreateAcceleratorTable((LPACCEL)&BSODaccel, BSOD_ACCEL_SIZE);
 
 	ShowWindow(g_hwOptions, nCmdShow);
 	while (GetMessage(&msg, NULL, 0, 0) > 0) {

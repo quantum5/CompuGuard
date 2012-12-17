@@ -62,7 +62,7 @@ extern HWND hBSODwnd;
 extern LPFN_SHUTDOWNBLOCKREASONCREATE fShutdownBlockReasonCreate;
 extern LPFN_SHUTDOWNBLOCKREASONDESTROY fShutdownBlockReasonDestroy;
 
-extern ACCEL BSODaccel[BSOD_ACCEL_SIZE+1];
+extern ACCEL BSODaccel[BSOD_ACCEL_SIZE];
 extern BOOL BSODbAccel[BSOD_ACCEL_SIZE];
 
 void InitializeTray(void);
