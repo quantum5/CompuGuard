@@ -1,10 +1,22 @@
 #include <windows.h>
 #include "CompuGuard.h"
 
+// in instance.c
+BOOL LockCreation();
+void UnlockCreation();
+
 int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine, int nCmdShow) {
 	MSG msg;
 	HMODULE user32;
 
+	if (!LockCreation()) {
+		if (MessageBox(NULL, T("Another instance is already running\r\n")
+				T("Do you still want to create a new instance?"),
+				T("Another Instance Running"),
+				MB_YESNO) == IDNO) {
+			ExitProcess(0);
+		}
+	}
 	g_hInstance = hInstance;
 	if (!InitializeCriticalSectionAndSpinCount(g_csTray, 256))
 		g_csTray = NULL;
@@ -12,7 +24,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 	g_hFont = CreateFont(18, 0, 0, 0, FW_REGULAR,
 							FALSE, FALSE, FALSE, DEFAULT_CHARSET,
 							OUT_DEFAULT_PRECIS, CLIP_DEFAULT_PRECIS,
-							DEFAULT_QUALITY, DEFAULT_PITCH|FF_SWISS, T("Segoe UI"));
+							DEFAULT_QUALITY, DEFAULT_PITCH|FF_SWISS, /*T("Segoe UI")*/NULL);
 	g_hBrush = CreateSolidBrush(RGB(0xF0, 0xF0, 0xF0));
 
 	ProtectProcess();
@@ -37,5 +49,6 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 	}
 	UninitializeTray();
 	DeleteObject(g_hBrush);
+	UnlockCreation();
 	return msg.wParam;
 }

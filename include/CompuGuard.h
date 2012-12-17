@@ -71,7 +71,7 @@ void UninitializeTray(void);
 HICON GetApplicationIcon(void);
 void ShowTrayMenu(HWND hwnd);
 INT_PTR ShowPasswordDialog(HWND hwnd);
-LRESULT CALLBACK DlgProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam);
+BOOL CALLBACK DlgProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam);
 
 void DisableShutdown(HWND hwnd);
 void EnableShutdown(HWND hwnd);

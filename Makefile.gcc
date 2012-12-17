@@ -10,6 +10,7 @@ RCFLAGS=-I$(INCDIR)
 FILES=$(SRCDIR)\CompuGuard.c \
       $(SRCDIR)\bsod.c \
       $(SRCDIR)\input.c \
+      $(SRCDIR)\instance.c \
       $(SRCDIR)\options.c \
       $(SRCDIR)\passdlg.c \
       $(SRCDIR)\pwrctrl.c \
@@ -29,8 +30,15 @@ $(INCDIR)\CompuGuard.h: $(INCDIR)\qdebug.h $(INCDIR)\selfmemory.h
 
 $(SRCDIR)\CompuGuard.c: $(INCDIR)\CompuGuard.h
 $(SRCDIR)\tray.c: $(INCDIR)\CompuGuard.h
+$(SRCDIR)\utilities.c: $(INCDIR)\CompuGuard.h
+$(SRCDIR)\bsod.c: $(INCDIR)\CompuGuard.h
+$(SRCDIR)\input.c: $(INCDIR)\CompuGuard.h
 $(SRCDIR)\variables.c: $(INCDIR)\CompuGuard.h
 $(SRCDIR)\options.c: $(INCDIR)\CompuGuard.h
+$(SRCDIR)\security.c: $(INCDIR)\CompuGuard.h
+$(SRCDIR)\securedesk.c: $(INCDIR)\CompuGuard.h
+$(SRCDIR)\passdlg.c: $(INCDIR)\CompuGuard.h
+$(SRCDIR)\pwrctrl.c: $(INCDIR)\CompuGuard.h
 $(SRCDIR)\resource.c: $(INCDIR)\resource.h $(INCDIR)\CompuGuard.h
 
 CompuGuard.exe: $(FILES) CompuGuardres.o

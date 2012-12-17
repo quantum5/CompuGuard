@@ -28,6 +28,7 @@ DISTDIR=dist\$(BUILD)
 FILES=$(OUTDIR)\CompuGuard.obj \
       $(OUTDIR)\bsod.obj \
       $(OUTDIR)\input.obj \
+      $(OUTDIR)\instance.obj \
       $(OUTDIR)\options.obj \
       $(OUTDIR)\passdlg.obj \
       $(OUTDIR)\pwrctrl.obj \

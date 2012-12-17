@@ -2,6 +2,8 @@
 #ifndef idD9931774_4FD2_4801_930826D0DC25DD7D
 #define idD9931774_4FD2_4801_930826D0DC25DD7D
 
+#include <stdio.h>
+
 #define MessageErrorWndTitle(hwnd, e, t) MessageBox(hwnd, e, t, MB_ICONERROR)
 #define MessageErrorWnd(hwnd, e) MessageBox(hwnd, e, T("Error!"), MB_ICONERROR)
 #define MessageError(e) MessageErrorWnd(NULL, e)
