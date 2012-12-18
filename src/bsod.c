@@ -98,6 +98,8 @@ LRESULT CALLBACK BSODProc(HWND hwnd, UINT message, WPARAM wParam, LPARAM lParam)
 			}
 			break;
 		case WM_DESTROY:
+			UnregisterHotKey(hwnd, 0xDEAD);
+
 			if (fShutdownBlockReasonDestroy != NULL)
 				fShutdownBlockReasonDestroy(hwnd);
 
