@@ -1,5 +1,4 @@
 #include <windows.h>
-#include <strsafe.h>
 #include <shellapi.h>
 #include "CompuGuard.h"
 
