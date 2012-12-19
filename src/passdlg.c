@@ -16,7 +16,7 @@ BOOL CALLBACK DlgProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam) {
 		case WM_COMMAND:
 			switch(wParam) {
 				case IDOK:
-					do {
+					MULTI_LINE_MACRO_BEGIN /* Abuse of Macros but OK */
 						DWORD dwLength, i;
 						TCHAR szPassword[PASSWORD_LENGTH+1];
 						
@@ -29,7 +29,7 @@ BOOL CALLBACK DlgProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam) {
 							szPassword[i] ^= 37;
 						EndDialog(hwnd, !lstrcmp(szPassword, szRealPassword));
 						break;
-					} while (0);
+					MULTI_LINE_MACRO_END;
 					break;
 				case IDCANCEL:
 					EndDialog(hwnd, 0);

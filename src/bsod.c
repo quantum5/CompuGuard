@@ -24,7 +24,7 @@ void RegisterBSODWindowClass(void) {
 	wincl.hbrBackground = (HBRUSH) GetStockObject(BLACK_BRUSH);
 	
 	if (!RegisterClassEx(&wincl)) {
-		MessageError("Can't register BSOD class!");
+		MessageError(T("Can't register BSOD class!"));
 		ExitProcess(1);
 	}
 }
@@ -38,7 +38,7 @@ void ShowBSOD(void) {
 	if (g_BSODsecureDesk)
 		EnterSecureDesk();
 	hBSODwnd = CreateWindowEx(
-			0, BSOD_WIN_CLASS, "Blue Screen of Death",
+			0, BSOD_WIN_CLASS, T("Blue Screen of Death"),
 			WS_POPUP, CW_USEDEFAULT,
 			CW_USEDEFAULT, 640, 480,
 			NULL, NULL, g_hInstance, NULL);
@@ -62,8 +62,8 @@ LRESULT CALLBACK BSODProc(HWND hwnd, UINT message, WPARAM wParam, LPARAM lParam)
 	switch (message) {
 		case WM_CREATE:
 			// Bitmap holder
-			scwnd = CreateWindowEx(0, "STATIC", "",
-					/*SS_REALSIZECONTROL | */SS_BITMAP | WS_CHILD | WS_VISIBLE,
+			scwnd = CreateWindowEx(0, T("STATIC"), T(""),
+					SS_BITMAP | WS_CHILD | WS_VISIBLE,
 					0, 0, 640, 480,
 					hwnd, (HMENU)-1, NULL, NULL);
 			SetTimer(hwnd, 0xBEEF, 1000, NULL);

@@ -16,7 +16,7 @@ void EnterSecureDesk() {
 	if (onSecureDesk)
 		return;
 	
-	GenerateUUID(szDeskName);
+	GenerateUUID(szDeskName, 40);
 	
 	hOldDesk = GetThreadDesktop(GetCurrentThreadId());
 	hNewDesk = CreateDesktop(szDeskName, NULL, NULL, 0, GENERIC_ALL, NULL);
