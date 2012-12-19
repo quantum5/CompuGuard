@@ -45,11 +45,6 @@ void InitializeAccessibilityShortcutKeys() {
 
 void AllowAccessibilityShortcutKeys(BOOL bAllowKeys) {
 	if (bAllowKeys) {
-		// Restore StickyKeys/etc to original state and enable Windows key
-		STICKYKEYS sk = StartupStickyKeys;
-		TOGGLEKEYS tk = StartupToggleKeys;
-		FILTERKEYS fk = StartupFilterKeys;
-
 		SystemParametersInfo(SPI_SETSTICKYKEYS, sizeof(STICKYKEYS), &StartupStickyKeys, 0);
 		SystemParametersInfo(SPI_SETTOGGLEKEYS, sizeof(TOGGLEKEYS), &StartupToggleKeys, 0);
 		SystemParametersInfo(SPI_SETFILTERKEYS, sizeof(FILTERKEYS), &StartupFilterKeys, 0);
@@ -79,4 +74,3 @@ void AllowAccessibilityShortcutKeys(BOOL bAllowKeys) {
 		}
 	}
 }
-

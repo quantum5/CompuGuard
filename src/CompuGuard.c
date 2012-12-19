@@ -18,13 +18,11 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 		}
 	}
 	g_hInstance = hInstance;
-	if (!InitializeCriticalSectionAndSpinCount(g_csTray, 256))
-		g_csTray = NULL;
 	g_hHeap = GetProcessHeap();
 	g_hFont = CreateFont(18, 0, 0, 0, FW_REGULAR,
 							FALSE, FALSE, FALSE, DEFAULT_CHARSET,
 							OUT_DEFAULT_PRECIS, CLIP_DEFAULT_PRECIS,
-							DEFAULT_QUALITY, DEFAULT_PITCH|FF_SWISS, /*T("Segoe UI")*/NULL);
+							DEFAULT_QUALITY, DEFAULT_PITCH|FF_SWISS, NULL);
 	g_hBrush = CreateSolidBrush(RGB(0xF0, 0xF0, 0xF0));
 
 	ProtectProcess();
