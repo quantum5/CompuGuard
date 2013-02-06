@@ -1,12 +1,13 @@
 #include <CompuGuard.h>
 #include <rpc.h>
 
-typedef unsigned char *RPC_CSTR;
-
 void GenerateUUID(LPTSTR szUUID) {
 	UUID bUuid;
-	RPC_CSTR rstrUUID;
-
+#ifdef UNICODE
+	unsigned wchar_t *rstrUUID;
+#else
+	unsigned char *rstrUUID;
+#endif
 	UuidCreate(&bUuid);
 	UuidToString(&bUuid, &rstrUUID);
 	lstrcpy(szUUID, rstrUUID);
@@ -31,7 +32,6 @@ void EnableTaskManager(void) {
 		RegSetValueEx(hSystemPolicy, "DisableTaskMgr", 0, REG_DWORD, (LPBYTE)&dwZero, sizeof(DWORD));
 }
 
-
 STICKYKEYS StartupStickyKeys = {sizeof(STICKYKEYS), 0};
 TOGGLEKEYS StartupToggleKeys = {sizeof(TOGGLEKEYS), 0};
 FILTERKEYS StartupFilterKeys = {sizeof(FILTERKEYS), 0};
@@ -45,11 +45,6 @@ void InitializeAccessibilityShortcutKeys() {
 
 void AllowAccessibilityShortcutKeys(BOOL bAllowKeys) {
 	if (bAllowKeys) {
-		// Restore StickyKeys/etc to original state and enable Windows key
-		STICKYKEYS sk = StartupStickyKeys;
-		TOGGLEKEYS tk = StartupToggleKeys;
-		FILTERKEYS fk = StartupFilterKeys;
-
 		SystemParametersInfo(SPI_SETSTICKYKEYS, sizeof(STICKYKEYS), &StartupStickyKeys, 0);
 		SystemParametersInfo(SPI_SETTOGGLEKEYS, sizeof(TOGGLEKEYS), &StartupToggleKeys, 0);
 		SystemParametersInfo(SPI_SETFILTERKEYS, sizeof(FILTERKEYS), &StartupFilterKeys, 0);

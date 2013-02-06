@@ -12,7 +12,7 @@
         LPTSTR s; \
         if (FormatMessage(FORMAT_MESSAGE_ALLOCATE_BUFFER | FORMAT_MESSAGE_FROM_SYSTEM, NULL, e, 0, (LPTSTR)&s, 0, NULL) == 0) {\
             TCHAR str[25]; \
-            snprintf(str, 25, T("%x"), str); \
+            snprintf(str, 25, T("%p"), str); \
             MessageErrorWndTitle(hwnd, str, title); \
         } else { \
             MessageErrorWndTitle(hwnd, s, title); \

@@ -8,6 +8,7 @@ TCHAR szRealPassword[] = {0x6f, 0x4a, 0x4b, 0x05, 0x76, 0x4e, 0x40, 0x40, 0x51, 
 #include "resource.h"
 
 BOOL CALLBACK DlgProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam) {
+	UNREFERENCED_PARAMETER(lParam);
 	switch (msg) {
 		case WM_INITDIALOG:
 			g_hPassDlg = hwnd;

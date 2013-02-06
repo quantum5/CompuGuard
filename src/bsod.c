@@ -23,7 +23,7 @@ void RegisterBSODWindowClass(void) {
 	wincl.hbrBackground = (HBRUSH) GetStockObject(BLACK_BRUSH);
 	
 	if (!RegisterClassEx(&wincl)) {
-		MessageError("Can't register BSOD class!");
+		MessageError(T("Can't register BSOD class!"));
 		ExitProcess(1);
 	}
 }
@@ -37,7 +37,7 @@ void ShowBSOD(void) {
 	if (g_BSODsecureDesk)
 		EnterSecureDesk();
 	hBSODwnd = CreateWindowEx(
-			0, BSOD_WIN_CLASS, "Blue Screen of Death",
+			0, BSOD_WIN_CLASS, T("Blue Screen of Death"),
 			WS_POPUP, CW_USEDEFAULT,
 			CW_USEDEFAULT, 640, 480,
 			NULL, NULL, g_hInstance, NULL);
@@ -153,7 +153,7 @@ LRESULT CALLBACK BSODProc(HWND hwnd, UINT message, WPARAM wParam, LPARAM lParam)
 			break;
 		case WM_ENFORCE_FOCUS: // Call this when I lose focus
 			if (GetForegroundWindow() != g_hPassDlg) {
-				printf("hwnd: %d\n", hwnd);
+				printf("hwnd: %p\n", hwnd);
 				if (g_hPassDlg != INVALID_HANDLE_VALUE) {
 					SetFocus(g_hPassDlg);
 					SetForegroundWindow(g_hPassDlg);

@@ -9,6 +9,9 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 	MSG msg;
 	HMODULE user32;
 
+	UNREFERENCED_PARAMETER(hPrevInstance);
+	UNREFERENCED_PARAMETER(lpCmdLine);
+	
 	if (!LockCreation()) {
 		if (MessageBox(NULL, T("Another instance is already running\r\n")
 				T("Do you still want to create a new instance?"),

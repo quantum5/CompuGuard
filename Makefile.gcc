@@ -2,10 +2,14 @@ SRCDIR=src
 INCDIR=include
 
 CC=gcc
-CFLAGS=-I$(INCDIR) -DCOMPUGUARD -DWIN32_LEAN_AND_MEAN -DWINVER=0x0501
+CFLAGS=-I$(INCDIR) -DCOMPUGUARD -DWIN32_LEAN_AND_MEAN -DWINVER=0x0501 -Wextra -Wall
 LIBS=-lkernel32 -luser32 -lgdi32 -lshell32 -ladvapi32 -lrpcrt4 -mwindows
 RC=windres
 RCFLAGS=-I$(INCDIR)
+
+ifdef UNICODE
+CFLAGS += -DUNICODE -D_UNICODE
+endif
 
 FILES=$(SRCDIR)\CompuGuard.c \
       $(SRCDIR)\bsod.c \
