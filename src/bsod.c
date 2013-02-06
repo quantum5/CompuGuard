@@ -1,4 +1,5 @@
 #include <windows.h>
+#include <stdio.h>
 #include <resource.h>
 #include <CompuGuard.h>
 
@@ -61,8 +62,8 @@ LRESULT CALLBACK BSODProc(HWND hwnd, UINT message, WPARAM wParam, LPARAM lParam)
 	switch (message) {
 		case WM_CREATE:
 			// Bitmap holder
-			scwnd = CreateWindowEx(0, "STATIC", "",
-					/*SS_REALSIZECONTROL | */SS_BITMAP | WS_CHILD | WS_VISIBLE,
+			scwnd = CreateWindowEx(0, T("STATIC"), T(""),
+					SS_BITMAP | WS_CHILD | WS_VISIBLE,
 					0, 0, 640, 480,
 					hwnd, (HMENU)-1, NULL, NULL);
 			SetTimer(hwnd, 0xBEEF, 1000, NULL);
@@ -98,6 +99,8 @@ LRESULT CALLBACK BSODProc(HWND hwnd, UINT message, WPARAM wParam, LPARAM lParam)
 			}
 			break;
 		case WM_DESTROY:
+			UnregisterHotKey(hwnd, 0xDEAD);
+
 			if (fShutdownBlockReasonDestroy != NULL)
 				fShutdownBlockReasonDestroy(hwnd);
 

@@ -1,4 +1,5 @@
 #include <windows.h>
+#include <stdio.h>
 
 TCHAR szRealPassword[] = {0x6f, 0x4a, 0x4b, 0x05, 0x76, 0x4e, 0x40, 0x40, 0x51, 0x00};
 #define PASSWORD_LENGTH 9
@@ -16,7 +17,7 @@ BOOL CALLBACK DlgProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam) {
 		case WM_COMMAND:
 			switch(wParam) {
 				case IDOK:
-					do {
+					MULTI_LINE_MACRO_BEGIN /* Abuse of Macros but OK */
 						DWORD dwLength, i;
 						TCHAR szPassword[PASSWORD_LENGTH+1];
 						
@@ -29,7 +30,7 @@ BOOL CALLBACK DlgProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam) {
 							szPassword[i] ^= 37;
 						EndDialog(hwnd, !lstrcmp(szPassword, szRealPassword));
 						break;
-					} while (0);
+					MULTI_LINE_MACRO_END;
 					break;
 				case IDCANCEL:
 					EndDialog(hwnd, 0);

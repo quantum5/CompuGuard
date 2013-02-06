@@ -11,14 +11,14 @@ DWORD ProtectProcess(void) {
 	pEmptyDacl = (PACL) SelfAlloc(sizeof(ACL));
 	if (!InitializeAcl(pEmptyDacl, sizeof(ACL), ACL_REVISION)) {
 		dwErr = GetLastError();
-		MessageLastErrorWndTitle(NULL, dwErr, "Failed to InitializeAcl()");
+		MessageLastErrorWndTitle(NULL, dwErr, T("Failed to InitializeAcl()"));
 		return dwErr;
 	}
 	dwErr = SetSecurityInfo(hProcess, SE_KERNEL_OBJECT, 
 							DACL_SECURITY_INFORMATION, NULL,
 							NULL, pEmptyDacl, NULL);
 	if (dwErr != ERROR_SUCCESS) {
-		MessageLastErrorWndTitle(NULL, GetLastError(), "Failed to SetSecurityInfo()");
+		MessageLastErrorWndTitle(NULL, GetLastError(), T("Failed to SetSecurityInfo()"));
 		return dwErr;
 	}
 	SelfFree(pEmptyDacl);

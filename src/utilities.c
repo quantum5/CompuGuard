@@ -1,35 +1,36 @@
 #include <CompuGuard.h>
 #include <rpc.h>
 
-void GenerateUUID(LPTSTR szUUID) {
+void GenerateUUID(LPTSTR szUUID, int size) {
 	UUID bUuid;
 #ifdef UNICODE
-	unsigned wchar_t *rstrUUID;
+	RPC_WSTR rstrUUID;
 #else
-	unsigned char *rstrUUID;
+	RPC_CSTR rstrUUID;
 #endif
+
 	UuidCreate(&bUuid);
 	UuidToString(&bUuid, &rstrUUID);
-	lstrcpy(szUUID, rstrUUID);
+	lstrcpyn(szUUID, (LPCTSTR) rstrUUID, size);
 	RpcStringFree(&rstrUUID);
 }
 
 void DisableTaskManager(void) {
 	DWORD dwOne = 1;
 	HKEY hSystemPolicy;
-	if (!RegCreateKeyEx(HKEY_CURRENT_USER, "Software\\Microsoft\\Windows\\"
-						"CurrentVersion\\Policies\\System", 0, NULL,
+	if (!RegCreateKeyEx(HKEY_CURRENT_USER, T("Software\\Microsoft\\Windows\\")
+						T("CurrentVersion\\Policies\\System"), 0, NULL,
 						0, KEY_SET_VALUE, NULL, &hSystemPolicy, NULL))
-		RegSetValueEx(hSystemPolicy, "DisableTaskMgr", 0, REG_DWORD, (LPBYTE)&dwOne, sizeof(DWORD));
+		RegSetValueEx(hSystemPolicy, T("DisableTaskMgr"), 0, REG_DWORD, (LPBYTE)&dwOne, sizeof(DWORD));
 }
 
 void EnableTaskManager(void) {
 	DWORD dwZero = 0;
 	HKEY hSystemPolicy;
-	if (!RegCreateKeyEx(HKEY_CURRENT_USER, "Software\\Microsoft\\Windows\\"
-						"CurrentVersion\\Policies\\System", 0, NULL,
+	if (!RegCreateKeyEx(HKEY_CURRENT_USER, T("Software\\Microsoft\\Windows\\")
+						T("CurrentVersion\\Policies\\System"), 0, NULL,
 						0, KEY_SET_VALUE, NULL, &hSystemPolicy, NULL))
-		RegSetValueEx(hSystemPolicy, "DisableTaskMgr", 0, REG_DWORD, (LPBYTE)&dwZero, sizeof(DWORD));
+		RegSetValueEx(hSystemPolicy, T("DisableTaskMgr"), 0, REG_DWORD, (LPBYTE)&dwZero, sizeof(DWORD));
 }
 
 STICKYKEYS StartupStickyKeys = {sizeof(STICKYKEYS), 0};
@@ -74,4 +75,3 @@ void AllowAccessibilityShortcutKeys(BOOL bAllowKeys) {
 		}
 	}
 }
-

@@ -11,6 +11,10 @@
 
 #define T(s) TEXT(s)
 
+#ifdef _MSC_VER
+#define snprintf sprintf_s
+#endif
+
 #define APP_NAME T("CompuGuard")
 #define OPTION_WIN_CLASS T("CompuGuardOptions")
 #define BSOD_WIN_CLASS T("CompuGuardBSOD")
